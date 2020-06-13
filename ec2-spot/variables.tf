@@ -2,15 +2,12 @@ variable "subnetAid" {}
 variable "subnetBid" {}
 variable "subnetACIDR" {}
 variable "subnetBCIDR" {}
-variable "subnetCid" {}
-variable "subnetDid" {}
 variable "subnetCCIDR" {}
 variable "subnetDCIDR" {}
 variable "vpc_id" {}
 variable "accessip" {
 }
 variable "key_name" {}
-variable "instance_name" {}
 variable "cloudwatch_retention" {
   default = 30
 }
@@ -26,7 +23,6 @@ variable "region" {}
 variable "app" {}
 variable "init_script" {}
 variable "app_function" {}
-variable "l_conf_ec2_count" {}
 variable "ami" {}
 variable "ec2_instance_type" {}
 variable "fromport" {}
