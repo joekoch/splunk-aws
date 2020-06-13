@@ -38,3 +38,4 @@ variable "enable_nat_instance" {
 variable "environment" {}
 variable "app" {}
 variable "splunk_app_deploy_bucket" {}
+variable "enable_splunk_license_server" {}

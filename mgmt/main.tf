@@ -244,6 +244,7 @@ data "template_file" "splunk_l_server_init" {
 #create splunk license server
 #copy splunk license file from s3 bucket to this license master host
 resource "aws_instance" "splunk_license_server" {
+  count = var.enable_splunk_license_server ? 1 : 0
   depends_on = [
   aws_vpc_endpoint.s3]
   ami           = var.splunk-ami
