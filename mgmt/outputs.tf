@@ -15,7 +15,7 @@ output "bastion_public_ip" {
 //}
 
 output "splunk_license_server" {
-  value = aws_instance.splunk_license_server.0.private_dns
+  value = var.enable_splunk_license_server ? aws_instance.splunk_license_server.0.private_dns : ""
 }
 
 output "s3_aws_vpc_endpoint_prefix_list_id" {
