@@ -15,9 +15,9 @@ output "bastion_public_ip" {
 //}
 
 output "splunk_license_server" {
-  value = aws_instance.splunk_license_server.private_dns
+  value = aws_instance.splunk_license_server.0.private_dns
 }
 
-output "s3_aws_vpc_endpoint_prefix_list_id"{
+output "s3_aws_vpc_endpoint_prefix_list_id" {
   value = aws_vpc_endpoint.s3.prefix_list_id
 }
