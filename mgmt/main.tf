@@ -426,21 +426,25 @@ resource "aws_security_group" "WinUser_sg" {
   tags = merge(local.base_tags, map("Name", "WinUser-SG"))
 }
 
-#add a nat instance to the module
-resource aws_instance "nat_instance" {
-  count             = var.enable_nat_instance ? 1 : 0
-  ami               = "ami-00a9d4a05375b2763"
-  instance_type     = "t2.micro"
-  source_dest_check = false
-  subnet_id         = var.subnetAid
-  vpc_security_group_ids = [
-  aws_security_group.nat-sg.0.id]
-  tags = merge(local.base_tags, map("Name", "NAT-server"))
+# Request a spot instance - nat instance
+resource "aws_spot_instance_request" "nat_instance" {
+  count                  = var.enable_nat_instance ? 1 : 0
+  ami                    = "ami-00a9d4a05375b2763"
+  source_dest_check      = false
+  instance_type          = var.bastion_instance_type
+  spot_price             = var.spot_price
+  spot_type              = "one-time"
+  wait_for_fulfillment   = true
+  key_name               = var.key_name
+  subnet_id              = var.subnetAid
+  vpc_security_group_ids = [aws_security_group.nat-sg.0.id]
+  tags                   = merge(local.base_tags, map("Name", "var.bastion_windows_name[count.index]"))
 }
+
 
 resource "aws_eip" "nat_eip" {
   count    = var.enable_nat_instance ? 1 : 0
-  instance = aws_instance.nat_instance.0.id
+  instance = aws_spot_instance_request.nat_instance.0.spot_instance_id
   vpc      = true
   tags     = merge(local.base_tags, map("Name", "NAT-EIP"))
 }
@@ -492,5 +496,5 @@ resource "aws_security_group" "nat-sg" {
 resource aws_route "nat_route" {
   route_table_id         = var.gtos_private_route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  instance_id            = aws_instance.nat_instance.0.id
+  instance_id            = aws_spot_instance_request.nat_instance.0.spot_instance_id
 }
