@@ -21,3 +21,7 @@ output "splunk_license_server" {
 output "s3_aws_vpc_endpoint_prefix_list_id" {
   value = aws_vpc_endpoint.s3.prefix_list_id
 }
+
+output "nat_instance" {
+  value = var.enable_nat_instance ? aws_spot_instance_request.nat_instance.private_ip : ""
+}

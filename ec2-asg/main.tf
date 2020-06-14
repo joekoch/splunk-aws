@@ -178,16 +178,19 @@ resource "aws_security_group" "sg_base" {
 }
 
 
-resource "aws_spot_instance_request" "ec2_spot" {
-  count         = var.ec2_spot_count
-  ami           = var.ami
-  depends_on    = [var.ec2_depends_on]
+resource "aws_launch_configuration" "l_conf" {
+  # Launch Configurations cannot be updated after creation with the AWS API.
+  # In order to update a Launch Configuration, Terraform will destroy the
+  # existing resource and create a replacement.
+  # We're only setting the name_prefix here,
+  # Terraform will add a random string at the end to keep it unique.
+  name_prefix   = "launch-conf-${var.project_name}-${var.app}-${var.app_function}"
+  image_id      = var.ami
   instance_type = var.ec2_instance_type
-  spot_type     = "EC2"
   spot_price    = var.spot_price
-  key_name      = var.key_name
   security_groups = [
   aws_security_group.sg_base.id]
+  key_name             = var.key_name
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.id
   user_data            = data.template_cloudinit_config.cloud_init.rendered
   ebs_block_device {
@@ -199,7 +202,37 @@ resource "aws_spot_instance_request" "ec2_spot" {
     volume_type = "standard"
     volume_size = var.root_volume_size
   }
-  subnet_id = var.subnetAid
-  tags      = merge(local.base_tags, map("Name", "${var.project_name}--${var.app}-${var.app_function}"))
+}
 
+resource "aws_autoscaling_group" "asg" {
+  # Force a redeployment when launch configuration changes.
+  # This will reset the desired capacity if it was changed due to
+  # autoscaling events.
+  depends_on           = [var.asg_depends_on]
+  name_prefix          = "ASG--${var.project_name}-${var.app}-${var.app_function}"
+  min_size             = var.asg_min_size
+  desired_capacity     = var.asg_des_size
+  max_size             = var.asg_max_size
+  health_check_type    = "EC2"
+  launch_configuration = aws_launch_configuration.l_conf.name
+  vpc_zone_identifier = [
+    var.subnetAid,
+  var.subnetBid]
+
+  # Required to redeploy without an outage.
+  lifecycle {
+    create_before_destroy = true
+  }
+  //
+  tag {
+    key                 = "Name"
+    propagate_at_launch = true
+    value               = "ASG--${var.project_name}-${var.app}-${var.app_function}"
+  }
+
+  tag {
+    key                 = "project"
+    propagate_at_launch = false
+    value               = var.project_name
+  }
 }

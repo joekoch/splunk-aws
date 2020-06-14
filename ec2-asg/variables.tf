@@ -32,8 +32,6 @@ variable "asg_count" {}
 variable "asg_min_size" {}
 variable "asg_des_size" {}
 variable "asg_max_size" {}
-variable "ec2_depends_on" {
+variable "asg_depends_on" {
   default = null
 }
-
-variable "ec2_spot_count" {}
