@@ -184,10 +184,11 @@ resource "aws_spot_instance_request" "ec2_spot" {
   ami   = var.ami
   depends_on = [
   var.ec2_depends_on]
-  instance_type = var.ec2_instance_type
-  spot_type     = var.spot_type
-  spot_price    = var.spot_price
-  key_name      = var.key_name
+  instance_type        = var.ec2_instance_type
+  wait_for_fulfillment = true
+  spot_type            = var.spot_type
+  spot_price           = var.spot_price
+  key_name             = var.key_name
   security_groups = [
   aws_security_group.sg_base.id]
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.id
