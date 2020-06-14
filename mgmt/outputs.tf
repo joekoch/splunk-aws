@@ -23,5 +23,5 @@ output "s3_aws_vpc_endpoint_prefix_list_id" {
 }
 
 output "nat_instance" {
-  value = var.enable_nat_instance ? aws_spot_instance_request.nat_instance.private_ip : ""
+  value = var.enable_nat_instance ? aws_spot_instance_request.nat_instance.0.private_ip : ""
 }
