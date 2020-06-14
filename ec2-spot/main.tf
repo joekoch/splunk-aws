@@ -147,6 +147,17 @@ resource "aws_security_group" "sg_base" {
     var.subnetACIDR]
   }
 
+  ingress {
+    from_port = var.fromport
+    to_port   = var.toport
+    protocol  = "tcp"
+    cidr_blocks = [
+    var.subnetACIDR]
+  }
+
+
+
+
   #unknown
   ingress {
     from_port = var.fromport
