@@ -96,7 +96,7 @@ resource "aws_iam_policy_attachment" "ec2_attach_ssm_s3" {
 }
 
 resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "iam_instance_profile"
+  name = "iam_instance_profile-${var.app}-${var.app_function}"
   role = aws_iam_role.ec2_role.id
 }
 
