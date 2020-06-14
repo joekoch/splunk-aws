@@ -8,7 +8,7 @@ locals {
 
 #create a cloudwatch log group for this project
 resource "aws_cloudwatch_log_group" "log_group" {
-  name              = var.cloudwatch_loggroup_name
+  name              = "${var.cloudwatch_loggroup_name}-${var.project_name}-${var.app}-${var.app_function}"
   retention_in_days = var.cloudwatch_retention
   tags              = merge(local.base_tags, map("Name", "cloudwatch-log-group"))
 }
