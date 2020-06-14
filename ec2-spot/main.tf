@@ -208,6 +208,7 @@ resource "aws_autoscaling_group" "asg" {
   # Force a redeployment when launch configuration changes.
   # This will reset the desired capacity if it was changed due to
   # autoscaling events.
+  depends_on           = [var.asg_depends_on]
   name_prefix          = "ASG--${var.project_name}-${var.app}-${var.app_function}"
   min_size             = var.asg_min_size
   desired_capacity     = var.asg_des_size
