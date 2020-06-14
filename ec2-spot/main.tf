@@ -15,7 +15,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
 
 
 resource "aws_iam_role" "ec2_role" {
-  name = "ec2_role-${var.project_name}"
+  name = "ec2_role-${var.project_name}-${var.app_function}-${var.app}"
   path = "/"
   # who can assume this role
   assume_role_policy = <<EOF
@@ -179,9 +179,10 @@ resource "aws_security_group" "sg_base" {
 
 
 resource "aws_spot_instance_request" "ec2_spot" {
-  count         = var.ec2_spot_count
-  ami           = var.ami
-  depends_on    = [var.ec2_depends_on]
+  count = var.ec2_spot_count
+  ami   = var.ami
+  depends_on = [
+  var.ec2_depends_on]
   instance_type = var.ec2_instance_type
   spot_type     = "EC2"
   spot_price    = var.spot_price
