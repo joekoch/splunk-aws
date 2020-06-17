@@ -1,5 +1,4 @@
 variable "subnetAid" {}
-variable "subnetBid" {}
 variable "subnetACIDR" {}
 variable "subnetBCIDR" {}
 variable "subnetCCIDR" {}
