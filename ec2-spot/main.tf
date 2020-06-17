@@ -144,7 +144,7 @@ resource "aws_security_group" "sg_base" {
     to_port   = var.toport
     protocol  = "tcp"
     cidr_blocks = [
-    var.subnetACIDR]
+    var.subnetACIDR, var.subnetBCIDR, var.subnetCCIDR.var.subnetDCIDR]
   }
 
   ingress {
@@ -152,19 +152,7 @@ resource "aws_security_group" "sg_base" {
     to_port   = var.toport
     protocol  = "tcp"
     cidr_blocks = [
-    var.subnetACIDR]
-  }
-
-
-
-
-  #unknown
-  ingress {
-    from_port = var.fromport
-    to_port   = var.toport
-    protocol  = "tcp"
-    cidr_blocks = [
-    var.subnetACIDR]
+    var.subnetACIDR, var.subnetBCIDR, var.subnetCCIDR.var.subnetDCIDR]
   }
 
   #aws cli
@@ -192,7 +180,7 @@ resource "aws_security_group" "sg_base" {
     to_port   = 22
     protocol  = "tcp"
     cidr_blocks = [
-    var.subnetCCIDR]
+    var.subnetACIDR, var.subnetBCIDR, var.subnetCCIDR.var.subnetDCIDR]
   }
 
   tags = merge(local.base_tags, map("Name", "SG-base"))
