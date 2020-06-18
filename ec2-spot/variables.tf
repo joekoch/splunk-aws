@@ -30,3 +30,4 @@ variable "ec2_depends_on" {
 
 variable "ec2_spot_count" {}
 variable "spot_type" {}
+variable "ip_addtl_allow" {}

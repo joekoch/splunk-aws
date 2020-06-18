@@ -134,9 +134,8 @@ data "template_cloudinit_config" "cloud_init" {
 
 
 resource "aws_security_group" "sg_base" {
-  name        = "SG-${var.project_name}-${var.app}-${var.app_function}"
-  description = "Used by members for splunk shc"
-  vpc_id      = var.vpc_id
+  name   = "SG-${var.project_name}-${var.app}-${var.app_function}"
+  vpc_id = var.vpc_id
 
   #unknown
   egress {
@@ -152,7 +151,7 @@ resource "aws_security_group" "sg_base" {
     to_port   = var.toport
     protocol  = "tcp"
     cidr_blocks = [
-    var.subnetACIDR, var.subnetBCIDR, var.subnetCCIDR, var.subnetDCIDR]
+    var.subnetACIDR, var.subnetBCIDR, var.subnetCCIDR, var.subnetDCIDR, var.ip_addtl_allow]
   }
 
   #aws cli
@@ -180,7 +179,7 @@ resource "aws_security_group" "sg_base" {
     to_port   = 22
     protocol  = "tcp"
     cidr_blocks = [
-    var.subnetACIDR, var.subnetBCIDR, var.subnetCCIDR, var.subnetDCIDR]
+    var.subnetACIDR, var.subnetBCIDR, var.subnetCCIDR, var.subnetDCIDR, var.ip_addtl_allow]
   }
 
   tags = merge(local.base_tags, map("Name", "SG-base"))
