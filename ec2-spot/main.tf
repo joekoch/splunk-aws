@@ -58,7 +58,6 @@ EOF
 }
 #attach the policy to the iam role
 resource "aws_iam_role_policy_attachment" "ec2_attach_cloudwatch" {
-  name       = "ec2_attach_cloudwatch"
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
   role       = aws_iam_role.ec2_role.id
 }
