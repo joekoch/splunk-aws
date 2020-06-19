@@ -57,43 +57,42 @@ resource "aws_iam_policy" "ssm_s3_endpoint" {
 EOF
 }
 #attach the policy to the iam role
-resource "aws_iam_policy_attachment" "ec2_attach_cloudwatch" {
+resource "aws_iam_role_policy_attachment" "ec2_attach_cloudwatch" {
   name       = "ec2_attach_cloudwatch"
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-  roles = [
-  aws_iam_role.ec2_role.id]
+  role       = aws_iam_role.ec2_role.id
 }
 
 #attach the policy to the iam role
-resource "aws_iam_policy_attachment" "ec2_attach_ec2" {
+resource "aws_iam_role_policy_attachment" "ec2_attach_ec2" {
   name       = "ec2_attach_ec2"
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
-  roles = [
-  aws_iam_role.ec2_role.id]
+  role       = aws_iam_role.ec2_role.id
+
 }
 
 #attach the policy to the iam role
-resource "aws_iam_policy_attachment" "ec2_attach_asg" {
+resource "aws_iam_role_policy_attachment" "ec2_attach_asg" {
   name       = "ec2_attach_asg"
   policy_arn = "arn:aws:iam::aws:policy/AutoScalingReadOnlyAccess"
-  roles = [
-  aws_iam_role.ec2_role.id]
+  role       = aws_iam_role.ec2_role.id
+
 }
 
 #attach the policy to the iam role
-resource "aws_iam_policy_attachment" "ec2_attach_ssm" {
+resource "aws_iam_role_policy_attachment" "ec2_attach_ssm" {
   name       = "ec2_attach_ssm"
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-  roles = [
-  aws_iam_role.ec2_role.id]
+  role       = aws_iam_role.ec2_role.id
+
 }
 
 #attach the policy to the iam role
-resource "aws_iam_policy_attachment" "ec2_attach_ssm_s3" {
+resource "aws_iam_role_policy_attachment" "ec2_attach_ssm_s3" {
   name       = "ec2_attach_ssm_s3"
   policy_arn = aws_iam_policy.ssm_s3_endpoint.arn
-  roles = [
-  aws_iam_role.ec2_role.id]
+  role       = aws_iam_role.ec2_role.id
+
 }
 
 resource "aws_iam_instance_profile" "ec2_profile" {
