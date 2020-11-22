@@ -5,7 +5,7 @@ locals {
     app     = var.app
   }
 }
-
+//store app tar files at team level for deployment
 resource "aws_s3_bucket" "splunkappdeploy" {
   bucket        = var.splunk_app_deploy_bucket
   force_destroy = true
@@ -157,7 +157,7 @@ data "aws_iam_policy_document" "splunk-lambda-assume-role-policy" {
     "sts:AssumeRole"]
 
     principals {
-      type = "Service"
+        type = "Service"
       identifiers = [
       "lambda.amazonaws.com"]
     }
@@ -475,8 +475,8 @@ resource "aws_security_group" "nat-sg" {
   }
 
   egress {
-    from_port = 80
-    to_port   = 80
+    from_port = 0
+    to_port   = 0
     protocol  = "tcp"
     cidr_blocks = [
     "0.0.0.0/0"]
